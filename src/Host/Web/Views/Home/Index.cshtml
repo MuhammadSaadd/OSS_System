@@ -1,0 +1,23 @@
+﻿@model Web.Models.HomeViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Title</h1>
+    <p class="lead">Order-to-Activate learning demo (OSS/BSS modular monolith).</p>
+    <p>
+        PostgreSQL:
+        @if (Model.DatabaseConnected)
+        {
+            <span class="badge text-bg-success">Connected (@Model.DatabaseStatus)</span>
+        }
+        else
+        {
+            <span class="badge text-bg-danger">@Model.DatabaseStatus</span>
+        }
+    </p>
+    <p class="text-muted">
+        Health endpoint: <a href="/health">/health</a>
+    </p>
+</div>

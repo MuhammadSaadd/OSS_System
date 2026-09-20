@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: oss-system-postgres
+    environment:
+      POSTGRES_USER: oss
+      POSTGRES_PASSWORD: oss
+      POSTGRES_DB: oss_system
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oss -d oss_system"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
