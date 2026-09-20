@@ -1,5 +1,6 @@
 using Catalog.Infrastructure;
 using Crm.Infrastructure;
+using Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Web.Persistence;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<HostDbContext>(options =>
 
 builder.Services.AddCatalogModule(builder.Configuration);
 builder.Services.AddCrmModule(builder.Configuration);
+builder.Services.AddInventoryModule(builder.Configuration);
 
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<HostDbContext>("postgres");
@@ -25,6 +27,7 @@ if (app.Environment.IsDevelopment())
 {
     await app.Services.ApplyCatalogMigrationsAsync();
     await app.Services.ApplyCrmMigrationsAsync();
+    await app.Services.ApplyInventoryMigrationsAsync();
 }
 else
 {

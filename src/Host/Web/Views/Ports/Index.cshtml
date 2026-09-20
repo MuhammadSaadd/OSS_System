@@ -1,0 +1,71 @@
+@model IReadOnlyList<AccessPortDto>
+@{
+    ViewData["Title"] = "Inventory";
+    var currentStatus = ViewBag.Status as AccessPortStatus?;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Access ports</h1>
+</div>
+
+<form method="get" class="row g-2 align-items-center mb-3">
+    <div class="col-auto">
+        <label for="status" class="col-form-label">Status</label>
+    </div>
+    <div class="col-auto">
+        <select id="status" name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">All</option>
+            @foreach (var value in Enum.GetValues<AccessPortStatus>())
+            {
+                <option value="@value" selected="@(currentStatus == value)">@value</option>
+            }
+        </select>
+    </div>
+    <noscript>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Filter</button>
+        </div>
+    </noscript>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Exchange</th>
+            <th>Port</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Count == 0)
+    {
+        <tr>
+            <td colspan="3" class="text-muted">No ports found.</td>
+        </tr>
+    }
+    else
+    {
+        @foreach (var port in Model)
+        {
+            <tr>
+                <td>@port.Exchange</td>
+                <td>@port.PortLabel</td>
+                <td>
+                    @switch (port.Status)
+                    {
+                        case AccessPortStatus.Available:
+                            <span class="badge text-bg-success">Available</span>
+                            break;
+                        case AccessPortStatus.Reserved:
+                            <span class="badge text-bg-warning">Reserved</span>
+                            break;
+                        case AccessPortStatus.Allocated:
+                            <span class="badge text-bg-primary">Allocated</span>
+                            break;
+                    }
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
