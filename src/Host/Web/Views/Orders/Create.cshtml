@@ -1,0 +1,37 @@
+@model CreateOrderViewModel
+@{
+    ViewData["Title"] = "Place order";
+}
+
+<h1 class="h3 mb-3">Place order</h1>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="CustomerId" class="form-label"></label>
+        <select asp-for="CustomerId" class="form-select"
+                asp-items="@(new SelectList(Model.Customers, nameof(CustomerOption.Id), nameof(CustomerOption.Name), Model.CustomerId))">
+            <option value="">-- select customer --</option>
+        </select>
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="OfferId" class="form-label"></label>
+        <select asp-for="OfferId" class="form-select"
+                asp-items="@(new SelectList(Model.Offers, nameof(OfferOption.Id), nameof(OfferOption.Name), Model.OfferId))">
+            <option value="">-- select offer --</option>
+        </select>
+        <span asp-validation-for="OfferId" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Place order</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,52 @@
+@model CustomerOrderDto
+@{
+    ViewData["Title"] = "Order details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Order details</h1>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to list</a>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success">@success</div>
+}
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<dl class="row col-md-8">
+    <dt class="col-sm-3">Customer</dt>
+    <dd class="col-sm-9">@Model.CustomerName</dd>
+
+    <dt class="col-sm-3">Offer</dt>
+    <dd class="col-sm-9">@Model.OfferName</dd>
+
+    <dt class="col-sm-3">Monthly fee</dt>
+    <dd class="col-sm-9">@Model.MonthlyFee.ToString("C")</dd>
+
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">
+        @if (Model.Status == OrderStatus.Draft)
+        {
+            <span class="badge text-bg-secondary">Draft</span>
+        }
+        else
+        {
+            <span class="badge text-bg-info">Submitted</span>
+        }
+    </dd>
+</dl>
+
+@if (Model.Status == OrderStatus.Draft)
+{
+    <form asp-action="Submit" method="post" class="mt-3">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Submit this order?');">
+            Submit order
+        </button>
+    </form>
+}

@@ -2,6 +2,9 @@ using Catalog.Infrastructure;
 using Crm.Infrastructure;
 using Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Ordering.Application.Abstractions;
+using Ordering.Infrastructure;
+using Web.Integration;
 using Web.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,10 @@ builder.Services.AddDbContext<HostDbContext>(options =>
 builder.Services.AddCatalogModule(builder.Configuration);
 builder.Services.AddCrmModule(builder.Configuration);
 builder.Services.AddInventoryModule(builder.Configuration);
+builder.Services.AddOrderingModule(builder.Configuration);
+
+builder.Services.AddScoped<ICustomerDirectory, CustomerDirectory>();
+builder.Services.AddScoped<IOfferCatalog, OfferCatalog>();
 
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<HostDbContext>("postgres");
@@ -28,6 +35,7 @@ if (app.Environment.IsDevelopment())
     await app.Services.ApplyCatalogMigrationsAsync();
     await app.Services.ApplyCrmMigrationsAsync();
     await app.Services.ApplyInventoryMigrationsAsync();
+    await app.Services.ApplyOrderingMigrationsAsync();
 }
 else
 {
