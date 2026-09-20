@@ -1,3 +1,4 @@
+using Catalog.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Web.Persistence;
 
@@ -9,6 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<HostDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddCatalogModule(builder.Configuration);
+
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<HostDbContext>("postgres");
 
@@ -16,7 +19,11 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    await app.Services.ApplyCatalogMigrationsAsync();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();

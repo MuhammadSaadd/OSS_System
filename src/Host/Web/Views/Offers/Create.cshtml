@@ -1,0 +1,43 @@
+@model CreateOfferViewModel
+@{
+    ViewData["Title"] = "Create offer";
+}
+
+<h1 class="h3 mb-3">Create offer</h1>
+
+<form asp-action="Create" method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DownloadMbps" class="form-label"></label>
+        <input asp-for="DownloadMbps" class="form-control" />
+        <span asp-validation-for="DownloadMbps" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UploadMbps" class="form-label"></label>
+        <input asp-for="UploadMbps" class="form-control" />
+        <span asp-validation-for="UploadMbps" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MonthlyFee" class="form-label"></label>
+        <input asp-for="MonthlyFee" class="form-control" />
+        <span asp-validation-for="MonthlyFee" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
